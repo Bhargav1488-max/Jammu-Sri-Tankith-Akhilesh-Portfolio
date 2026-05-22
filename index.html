@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tankith Akhilesh — Writer. Director. Storyteller.</title>
+  <meta name="description" content="Tankith Akhilesh — Telugu Screenwriter & Aspiring Feature Film Director based in Hyderabad, India." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-dim: rgba(201,168,76,0.15);
+      --gold-glow: rgba(201,168,76,0.35);
+      --black: #080808;
+      --charcoal: #111111;
+      --dark: #161616;
+      --mid: #1e1e1e;
+      --muted: #5a5a5a;
+      --ash: #8a8a8a;
+      --light: #d0d0d0;
+      --white: #f0ede8;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Inter', system-ui, sans-serif;
+      --transition: 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    body {
+      background: var(--black);
+      color: var(--light);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--gold); color: var(--black); }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ═══════════════════════════════════════════
+       CUSTOM CURSOR
+    ═══════════════════════════════════════════ */
+    #cursor-dot {
+      position: fixed;
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, opacity 0.3s ease;
+    }
+
+    #cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,168,76,0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+    }
+
+    body.cursor-hover #cursor-dot { transform: translate(-50%, -50%) scale(2.5); }
+    body.cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: var(--gold); }
+
+    /* ═══════════════════════════════════════════
+       FILM GRAIN OVERLAY
+    ═══════════════════════════════════════════ */
+    .grain-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      mix-blend-mode: overlay;
+    }
+
+    /* ═══════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.5s ease, padding 0.4s ease, backdrop-filter 0.5s ease;
+    }
+
+    #nav.scrolled {
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(12px);
+      padding: 14px 48px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ash);
+      position: relative;
+      transition: color var(--transition);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--light);
+      transition: var(--transition);
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(8,8,8,0.97);
+      z-index: 490;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--light);
+      letter-spacing: 0.06em;
+      transition: color 0.3s ease;
+    }
+
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('img/1.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transform: scale(1.06);
+      will-change: transform;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(8,8,8,0.55) 0%,
+        rgba(8,8,8,0.45) 50%,
+        rgba(8,8,8,0.82) 100%
+      );
+      z-index: 1;
+    }
+
+    /* Letterbox bars */
+    .hero-bar-top, .hero-bar-bottom {
+      position: absolute;
+      left: 0; right: 0;
+      height: 52px;
+      background: var(--black);
+      z-index: 3;
+    }
+    .hero-bar-top { top: 0; }
+    .hero-bar-bottom { bottom: 0; }
+
+    .hero-content {
+      position: relative;
+      z-index: 4;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 8vw, 8rem);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .hero-name .char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .hero-subname {
+      font-family: var(--serif);
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 28px;
+      opacity: 0;
+      font-style: italic;
+    }
+
+    .hero-tagline {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      opacity: 0;
+    }
+
+    .hero-location {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    .scroll-indicator span {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-arrow {
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      position: relative;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ═══════════════════════════════════════════
+       SHARED SECTION STYLES
+    ═══════════════════════════════════════════ */
+    section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 120px 48px;
+    }
+
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    /* Fade-up animation class */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94),
+                  transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-up.delay-1 { transition-delay: 0.1s; }
+    .fade-up.delay-2 { transition-delay: 0.2s; }
+    .fade-up.delay-3 { transition-delay: 0.3s; }
+    .fade-up.delay-4 { transition-delay: 0.4s; }
+    .fade-up.delay-5 { transition-delay: 0.5s; }
+    .fade-up.delay-6 { transition-delay: 0.6s; }
+
+    /* ═══════════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════════ */
+    #about { background: var(--charcoal); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-image-wrap {
+      position: relative;
+    }
+
+    .about-image-wrap::before {
+      content: '';
+      position: absolute;
+      top: -16px; left: -16px;
+      right: 16px; bottom: 16px;
+      border: 1px solid rgba(201,168,76,0.3);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .about-image-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(8,8,8,0.5));
+      z-index: 1;
+    }
+
+    .about-image-wrap img {
+      position: relative;
+      z-index: 0;
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top;
+      filter: grayscale(20%) contrast(1.08);
+    }
+
+    /* Aspect ratio letterbox top/bottom on image */
+    .film-frame-bar {
+      position: absolute;
+      left: 0; right: 0;
+      height: 28px;
+      background: var(--black);
+      z-index: 2;
+    }
+    .film-frame-bar.top { top: 0; }
+    .film-frame-bar.bottom { bottom: 0; }
+
+    .about-content {}
+
+    .about-bio {
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--ash);
+      margin-bottom: 36px;
+    }
+
+    .about-bio strong { color: var(--light); font-weight: 500; }
+
+    .about-quote {
+      border-left: 2px solid var(--gold);
+      padding: 16px 24px;
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1.6;
+      margin-bottom: 36px;
+      background: rgba(201,168,76,0.04);
+    }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .about-tag {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 6px 16px;
+      border-radius: 2px;
+    }
+
+    /* ═══════════════════════════════════════════
+       WRITTEN WORKS
+    ═══════════════════════════════════════════ */
+    #work {
+      background: var(--black);
+    }
+
+    .work-bg-texture {
+      position: absolute;
+      inset: 0;
+      background-image: url('img/3.jpeg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.04;
+      z-index: 0;
+    }
+
+    .work-header {
+      margin-bottom: 60px;
+    }
+
+    .work-subheading {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .work-card {
+      position: relative;
+      background: var(--mid);
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      aspect-ratio: 4/5;
+    }
+
+    .work-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 24px 60px rgba(201,168,76,0.18), 0 0 0 1px rgba(201,168,76,0.25);
+      border-color: rgba(201,168,76,0.3);
+    }
+
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+    }
+
+    /* Film strip side decoration */
+    .card-strip {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 18px;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 12px 0;
+      gap: 0;
+    }
+
+    .card-strip-hole {
+      width: 8px; height: 10px;
+      background: var(--mid);
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .card-number {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+    }
+
+    .card-genre-badge {
+      position: absolute;
+      top: 14px;
+      left: 30px;
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.35);
+      padding: 3px 10px;
+      border-radius: 2px;
+      background: rgba(201,168,76,0.07);
+    }
+
+    .card-body {
+      position: absolute;
+      bottom: 0; left: 18px; right: 0;
+      padding: 20px 20px 24px;
+    }
+
+    .card-title {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .card-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-hover-reveal {
+      position: absolute;
+      inset: 0;
+      background: rgba(8,8,8,0.92);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      text-align: center;
+    }
+
+    .work-card:hover .card-hover-reveal { opacity: 1; }
+
+    .card-reveal-title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .card-reveal-tag {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .card-reveal-desc {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--ash);
+      line-height: 1.6;
+    }
+
+    .work-note {
+      margin-top: 48px;
+      padding: 20px 28px;
+      border: 1px solid rgba(201,168,76,0.2);
+      background: rgba(201,168,76,0.04);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .work-note-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .work-note-text {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--ash);
+      letter-spacing: 0.04em;
+    }
+
+    .work-note-text strong { color: var(--gold); font-weight: 500; }
+
+    /* ═══════════════════════════════════════════
+       SKILLS
+    ═══════════════════════════════════════════ */
+    #skills { background: var(--charcoal); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .skill-item {
+      margin-bottom: 28px;
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .skill-name {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--light);
+    }
+
+    .skill-pct {
+      font-family: var(--serif);
+      font-size: 0.85rem;
+      color: var(--gold);
+    }
+
+    .skill-bar-track {
+      height: 2px;
+      background: rgba(255,255,255,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--gold), rgba(201,168,76,0.5));
+      width: 0;
+      transition: width 1.2s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+
+    .skill-bar-fill.animated { width: var(--target-width); }
+
+    .skills-cta-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .skills-cta-label {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      line-height: 1.4;
+    }
+
+    .skills-cta-label strong {
+      color: var(--white);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .btn-clapperboard {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 16px 28px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.35s ease;
+      text-decoration: none;
+      align-self: flex-start;
+    }
+
+    .btn-clapperboard::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      z-index: 0;
+    }
+
+    .btn-clapperboard:hover::before { transform: scaleX(1); }
+    .btn-clapperboard:hover { color: var(--black); }
+
+    .btn-clapperboard span, .btn-icon { position: relative; z-index: 1; }
+
+    .btn-icon {
+      font-size: 1.1rem;
+    }
+
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .skill-pill {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ash);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 7px 16px;
+      border-radius: 2px;
+      transition: color 0.3s, border-color 0.3s, background 0.3s;
+    }
+
+    .skill-pill:hover {
+      color: var(--gold);
+      border-color: rgba(201,168,76,0.4);
+      background: rgba(201,168,76,0.05);
+    }
+
+    /* ═══════════════════════════════════════════
+       DIRECTOR'S VISION
+    ═══════════════════════════════════════════ */
+    #vision {
+      background: var(--black);
+    }
+
+    .vision-parallax-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('img/3.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      opacity: 0.08;
+    }
+
+    .vision-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, var(--black) 0%, rgba(8,8,8,0.7) 50%, var(--black) 100%);
+    }
+
+    .vision-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .vision-statement {
+      max-width: 780px;
+      margin: 0 auto 80px;
+      text-align: center;
+    }
+
+    .vision-quote-mark {
+      font-family: var(--serif);
+      font-size: 6rem;
+      line-height: 0.6;
+      color: var(--gold);
+      opacity: 0.3;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .vision-text {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--light);
+      line-height: 1.8;
+    }
+
+    .vision-genre-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.4);
+      padding: 8px 20px;
+      margin-top: 32px;
+    }
+
+    .influences-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .influence-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 40px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .influence-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.5s ease;
+    }
+
+    .influence-card:hover {
+      background: rgba(201,168,76,0.05);
+      border-color: rgba(201,168,76,0.2);
+    }
+
+    .influence-card:hover::before { transform: scaleX(1); }
+
+    .influence-number {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 700;
+      color: rgba(201,168,76,0.12);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .influence-name {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .influence-descriptor {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .influence-desc {
+      margin-top: 12px;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════════ */
+    #contact { background: var(--charcoal); }
+
+    .contact-heading {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 60px;
+    }
+
+    .contact-heading em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: padding-left var(--transition);
+    }
+
+    .contact-item:hover { padding-left: 8px; }
+
+    .contact-icon {
+      font-size: 1.2rem;
+      width: 44px; height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(201,168,76,0.2);
+      background: rgba(201,168,76,0.05);
+      flex-shrink: 0;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .contact-item:hover .contact-icon {
+      background: rgba(201,168,76,0.12);
+      border-color: rgba(201,168,76,0.5);
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-label {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .contact-value {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      color: var(--light);
+      transition: color 0.3s ease;
+    }
+
+    .contact-item:hover .contact-value { color: var(--gold); }
+
+    /* Contact form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .form-input, .form-textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--light);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      padding: 14px 18px;
+      transition: border-color var(--transition), background var(--transition);
+      outline: none;
+      border-radius: 0;
+      resize: none;
+      width: 100%;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: rgba(201,168,76,0.5);
+      background: rgba(201,168,76,0.03);
+    }
+
+    .form-textarea { height: 120px; }
+
+    .btn-submit {
+      background: var(--gold);
+      color: var(--black);
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      border: none;
+      padding: 16px 32px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      align-self: flex-start;
+    }
+
+    .btn-submit:hover {
+      background: #e0bc5a;
+      transform: translateY(-2px);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-copy {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .footer-tagline {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+    }
+
+    /* ═══════════════════════════════════════════
+       GOLD DIVIDER LINE
+    ═══════════════════════════════════════════ */
+    .gold-rule {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 24px 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCROLLBAR
+    ═══════════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .section-inner { padding: 80px 28px; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-image-wrap { max-width: 340px; }
+      .works-grid { grid-template-columns: repeat(2, 1fr); }
+      .skills-grid { grid-template-columns: 1fr; gap: 40px; }
+      .influences-grid { grid-template-columns: 1fr; }
+      .contact-layout { grid-template-columns: 1fr; gap: 48px; }
+      footer { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 640px) {
+      #nav { padding: 16px 20px; }
+      #nav.scrolled { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .section-inner { padding: 64px 20px; }
+      .hero-bar-top, .hero-bar-bottom { height: 32px; }
+      .works-grid { grid-template-columns: 1fr; }
+      .influences-grid { grid-template-columns: 1fr; gap: 1px; }
+      .contact-heading { font-size: 2.4rem; margin-bottom: 40px; }
+      footer { padding: 28px 20px; }
+    }
+
+    /* ═══════════════════════════════════════════
+       PAGE LOADER
+    ═══════════════════════════════════════════ */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      transition: opacity 0.8s ease;
+    }
+
+    #loader.hide { opacity: 0; pointer-events: none; }
+
+    .loader-name {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .loader-bar-track {
+      width: 200px; height: 1px;
+      background: rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loader-bar-fill {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      background: var(--gold);
+      animation: loaderFill 1.6s ease forwards;
+    }
+
+    @keyframes loaderFill {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div id="loader">
+    <div class="loader-name">T · A</div>
+    <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- ═══ NAV ═══ -->
+  <nav id="nav" role="navigation">
+    <a href="#hero" class="nav-logo">T.A.</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" class="mobile-nav-link">About</a>
+    <a href="#work" class="mobile-nav-link">Work</a>
+    <a href="#skills" class="mobile-nav-link">Skills</a>
+    <a href="#vision" class="mobile-nav-link">Vision</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="hero">
+    <div class="hero-bar-top"></div>
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="grain-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow" id="heroEyebrow">Hyderabad, India</p>
+      <h1 class="hero-name" id="heroName">TANKITH AKHILESH</h1>
+      <p class="hero-subname" id="heroSubname">Jammu Sri Tankith Akhilesh</p>
+      <p class="hero-tagline" id="heroTagline">Writer. Transitioning Director.</p>
+      <p class="hero-location" id="heroLocation">Hyderabad &nbsp;·&nbsp; Telangana &nbsp;·&nbsp; India</p>
+    </div>
+
+    <div class="scroll-indicator" id="scrollIndicator">
+      <div class="scroll-arrow"></div>
+      <span>Scroll</span>
+    </div>
+    <div class="hero-bar-bottom"></div>
+  </section>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+
+        <div class="about-image-wrap fade-up">
+          <div class="film-frame-bar top"></div>
+          <img src="img/2.jpeg" alt="Tankith Akhilesh — Writer & Director" loading="lazy" />
+          <div class="film-frame-bar bottom"></div>
+        </div>
+
+        <div class="about-content">
+          <p class="section-label fade-up">About</p>
+          <h2 class="section-title fade-up delay-1">The Storyteller<br /><em style="font-style:italic;color:var(--gold);">Behind the Frame</em></h2>
+          <div class="gold-rule fade-up delay-2"></div>
+
+          <blockquote class="about-quote fade-up delay-2">
+            "Every story I write is a wound I'm trying to understand — and a world I'm inviting others into."
+          </blockquote>
+
+          <p class="about-bio fade-up delay-3">
+            <strong>Tankith Akhilesh</strong> is a Telugu screenwriter currently working with
+            <strong>Chai Bisket / Chai Shots</strong> as a Writer and AI Dubbing Language Expert.
+            With a passion for storytelling rooted in Telugu cinema's raw emotional core, he is now
+            channeling years of writing craft into his first steps as a feature film director.
+          </p>
+          <p class="about-bio fade-up delay-4">
+            Inspired by the visceral intensity of <strong>Puri Jagannath</strong>, the dark
+            psychological depth of <strong>Sandeep Reddy Vanga</strong>, and the suspense mastery of
+            <strong>Alfred Hitchcock</strong>, Tankith brings a distinctive voice to every story he
+            tells — stories that refuse to be forgotten.
+          </p>
+
+          <div class="about-tags fade-up delay-5">
+            <span class="about-tag">Telugu Cinema</span>
+            <span class="about-tag">Web Series</span>
+            <span class="about-tag">Feature Film</span>
+            <span class="about-tag">AI Dubbing</span>
+            <span class="about-tag">Hyderabad</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WRITTEN WORKS ═══ -->
+  <section id="work">
+    <div class="work-bg-texture"></div>
+    <div class="section-inner">
+
+      <div class="work-header">
+        <p class="section-label fade-up">Portfolio</p>
+        <h2 class="section-title fade-up delay-1">Written Works</h2>
+        <p class="work-subheading fade-up delay-2">Telugu Web Series &nbsp;—&nbsp; Chai Bisket / Chai Shots</p>
+      </div>
+
+      <div class="works-grid">
+
+        <div class="work-card fade-up delay-1">
+          <div class="card-bg"></div>
+          <div class="card-strip">
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+          </div>
+          <span class="card-genre-badge">Drama</span>
+          <span class="card-number">01</span>
+          <div class="card-body">
+            <h3 class="card-title">Maaya</h3>
+            <p class="card-label">Telugu Dialogues</p>
+          </div>
+          <div class="card-hover-reveal">
+            <div class="card-reveal-title">Maaya</div>
+            <div class="card-reveal-tag">Drama · Telugu Web Series</div>
+            <p class="card-reveal-desc">A story woven through illusion and longing — a deep emotional journey told through raw Telugu dialogue.</p>
+          </div>
+        </div>
+
+        <div class="work-card fade-up delay-2">
+          <div class="card-bg"></div>
+          <div class="card-strip">
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+          </div>
+          <span class="card-genre-badge">Comedy</span>
+          <span class="card-number">02</span>
+          <div class="card-body">
+            <h3 class="card-title">Super Powers</h3>
+            <p class="card-label">Telugu Dialogues</p>
+          </div>
+          <div class="card-hover-reveal">
+            <div class="card-reveal-title">Super Powers</div>
+            <div class="card-reveal-tag">Comedy · Telugu Web Series</div>
+            <p class="card-reveal-desc">What if ordinary people discovered extraordinary abilities? A comedic yet heartfelt Telugu series.</p>
+          </div>
+        </div>
+
+        <div class="work-card fade-up delay-3">
+          <div class="card-bg"></div>
+          <div class="card-strip">
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+          </div>
+          <span class="card-genre-badge">Thriller</span>
+          <span class="card-number">03</span>
+          <div class="card-body">
+            <h3 class="card-title">Rakasi Pilla</h3>
+            <p class="card-label">Telugu Dialogues</p>
+          </div>
+          <div class="card-hover-reveal">
+            <div class="card-reveal-title">Rakasi Pilla</div>
+            <div class="card-reveal-tag">Thriller · Telugu Web Series</div>
+            <p class="card-reveal-desc">A dark, gripping story about a woman who defies every label placed upon her — explosive Telugu writing.</p>
+          </div>
+        </div>
+
+        <div class="work-card fade-up delay-1">
+          <div class="card-bg"></div>
+          <div class="card-strip">
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+          </div>
+          <span class="card-genre-badge">Romance</span>
+          <span class="card-number">04</span>
+          <div class="card-body">
+            <h3 class="card-title">Love in Mussoorie</h3>
+            <p class="card-label">Telugu Dialogues</p>
+          </div>
+          <div class="card-hover-reveal">
+            <div class="card-reveal-title">Love in Mussoorie</div>
+            <div class="card-reveal-tag">Romance · Telugu Web Series</div>
+            <p class="card-reveal-desc">A tender love story set against the misty hills of Mussoorie, told in the cadence of Telugu hearts.</p>
+          </div>
+        </div>
+
+        <div class="work-card fade-up delay-2">
+          <div class="card-bg"></div>
+          <div class="card-strip">
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+          </div>
+          <span class="card-genre-badge">Romance</span>
+          <span class="card-number">05</span>
+          <div class="card-body">
+            <h3 class="card-title">Love in Phalgam</h3>
+            <p class="card-label">Telugu Dialogues</p>
+          </div>
+          <div class="card-hover-reveal">
+            <div class="card-reveal-title">Love in Phalgam</div>
+            <div class="card-reveal-tag">Romance · Telugu Web Series</div>
+            <p class="card-reveal-desc">Set in the serene valleys of Pahalgam — a love story that breathes beauty into every spoken word.</p>
+          </div>
+        </div>
+
+        <div class="work-card fade-up delay-3">
+          <div class="card-bg"></div>
+          <div class="card-strip">
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+            <div class="card-strip-hole"></div><div class="card-strip-hole"></div>
+          </div>
+          <span class="card-genre-badge">Drama</span>
+          <span class="card-number">06</span>
+          <div class="card-body">
+            <h3 class="card-title">Influencer Fiona</h3>
+            <p class="card-label">Telugu Dialogues</p>
+          </div>
+          <div class="card-hover-reveal">
+            <div class="card-reveal-title">Influencer Fiona</div>
+            <div class="card-reveal-tag">Drama · Telugu Web Series</div>
+            <p class="card-reveal-desc">The glittering facade and brutal reality behind modern fame — a contemporary Telugu drama.</p>
+          </div>
+        </div>
+
+      </div><!-- /works-grid -->
+
+      <div class="work-note fade-up">
+        <span class="work-note-icon">🎬</span>
+        <p class="work-note-text">
+          Currently: <strong>Writer &amp; AI Dubbing Language Expert</strong> at Chai Bisket / Chai Shots — Hyderabad's leading digital content studio.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ SKILLS ═══ -->
+  <section id="skills">
+    <div class="section-inner">
+      <div class="skills-grid">
+
+        <div>
+          <p class="section-label fade-up">Craft</p>
+          <h2 class="section-title fade-up delay-1">Areas of<br />Expertise</h2>
+          <div class="gold-rule fade-up delay-2"></div>
+
+          <div class="skill-item fade-up delay-2">
+            <div class="skill-header">
+              <span class="skill-name">Screenwriting</span>
+              <span class="skill-pct">95%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="--target-width: 95%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item fade-up delay-3">
+            <div class="skill-header">
+              <span class="skill-name">Telugu Dialogue Writing</span>
+              <span class="skill-pct">92%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="--target-width: 92%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item fade-up delay-3">
+            <div class="skill-header">
+              <span class="skill-name">Story Development</span>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="--target-width: 90%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item fade-up delay-4">
+            <div class="skill-header">
+              <span class="skill-name">AI Dubbing &amp; Localization</span>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="--target-width: 88%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item fade-up delay-4">
+            <div class="skill-header">
+              <span class="skill-name">Script Editing</span>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="--target-width: 85%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item fade-up delay-5">
+            <div class="skill-header">
+              <span class="skill-name">Narrative Structure</span>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="--target-width: 90%"></div>
+            </div>
+          </div>
+
+          <div class="skill-pills fade-up delay-5">
+            <span class="skill-pill">Screenwriting</span>
+            <span class="skill-pill">Telugu Dialogue</span>
+            <span class="skill-pill">Story Development</span>
+            <span class="skill-pill">AI Dubbing</span>
+            <span class="skill-pill">Script Editing</span>
+            <span class="skill-pill">Narrative Structure</span>
+          </div>
+        </div>
+
+        <div class="skills-cta-wrap fade-up delay-2">
+          <p class="skills-cta-label">
+            Stories are not written.<br />
+            <strong>They are excavated.</strong>
+          </p>
+          <p class="about-bio" style="font-size:0.88rem">
+            Six produced web series. Hundreds of dialogues that have reached millions of Telugu viewers.
+            A voice that is distinctly raw, distinctly emotional, and unmistakably Telugu.
+          </p>
+          <a href="writing-sample.pdf" class="btn-clapperboard" download>
+            <span class="btn-icon">🎞</span>
+            <span>Download Writing Sample</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DIRECTOR'S VISION ═══ -->
+  <section id="vision">
+    <div class="vision-parallax-bg"></div>
+    <div class="vision-overlay"></div>
+    <div class="section-inner vision-inner">
+
+      <div class="vision-statement">
+        <p class="section-label fade-up" style="justify-content:center">Director's Vision</p>
+        <span class="vision-quote-mark fade-up delay-1">"</span>
+        <p class="vision-text fade-up delay-2">
+          I want to make feature films that shake people — stories that live in the body, not just the
+          mind. Shaped by the raw passion of Puri Jagannath, the unflinching darkness of Sandeep Reddy
+          Vanga, and the clockwork tension of Alfred Hitchcock, my vision is to bring Telugu cinema a
+          new kind of edge — emotionally explosive, visually bold, and impossible to forget.
+        </p>
+        <div class="vision-genre-badge fade-up delay-3">
+          <span>★</span> Feature Film <span>★</span>
+        </div>
+      </div>
+
+      <div class="influences-grid">
+
+        <div class="influence-card fade-up delay-1">
+          <div class="influence-number">01</div>
+          <h3 class="influence-name">Puri Jagannath</h3>
+          <p class="influence-descriptor">Raw Passion</p>
+          <p class="influence-desc">Explosive energy, street-smart writing, and the kind of mass masala that electrifies audiences.</p>
+        </div>
+
+        <div class="influence-card fade-up delay-2">
+          <div class="influence-number">02</div>
+          <h3 class="influence-name">Sandeep Reddy Vanga</h3>
+          <p class="influence-descriptor">Unflinching Darkness</p>
+          <p class="influence-desc">Psychological intensity and the courage to confront the uncomfortable truths of human nature.</p>
+        </div>
+
+        <div class="influence-card fade-up delay-3">
+          <div class="influence-number">03</div>
+          <h3 class="influence-name">Alfred Hitchcock</h3>
+          <p class="influence-descriptor">Clockwork Tension</p>
+          <p class="influence-desc">The master of suspense — every frame calculated, every silence weaponized, every reveal earned.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact">
+    <div class="section-inner">
+
+      <h2 class="contact-heading fade-up">Let's Make<br /><em>Something.</em></h2>
+
+      <div class="contact-layout">
+
+        <div class="contact-details fade-up delay-1">
+          <p class="about-bio" style="margin-bottom:32px;font-size:0.9rem">
+            Open to collaborations, screenwriting commissions, creative conversations, and directing projects.
+            Reach out — great stories begin with a single conversation.
+          </p>
+
+          <a href="mailto:akhiljammu35@gmail.com" class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div class="contact-info">
+              <span class="contact-label">Email</span>
+              <span class="contact-value">akhiljammu35@gmail.com</span>
+            </div>
+          </a>
+
+          <a href="tel:+917358442795" class="contact-item">
+            <div class="contact-icon">📱</div>
+            <div class="contact-info">
+              <span class="contact-label">Phone</span>
+              <span class="contact-value">+91 73584 42795</span>
+            </div>
+          </a>
+
+          <a href="https://www.linkedin.com/in/tankith-jammu" target="_blank" rel="noopener noreferrer" class="contact-item">
+            <div class="contact-icon">💼</div>
+            <div class="contact-info">
+              <span class="contact-label">LinkedIn</span>
+              <span class="contact-value">Tankith Jammu</span>
+            </div>
+          </a>
+        </div>
+
+        <form class="contact-form fade-up delay-2" id="contactForm" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label class="form-label" for="formName">Name</label>
+            <input class="form-input" id="formName" type="text" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="formEmail">Email</label>
+            <input class="form-input" id="formEmail" type="email" placeholder="your@email.com" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="formMessage">Message</label>
+            <textarea class="form-textarea" id="formMessage" placeholder="Tell me about your project..." required></textarea>
+          </div>
+          <button type="submit" class="btn-submit" id="formSubmitBtn">Send Message</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer>
+    <span class="footer-logo">T.A.</span>
+    <p class="footer-copy">© 2025 Tankith Akhilesh. All rights reserved.</p>
+    <p class="footer-tagline">Writer. Director. Storyteller.</p>
+  </footer>
+
+
+  <!-- ═══ JAVASCRIPT ═══ -->
+  <script>
+    /* ── PAGE LOADER ─────────────────────────────── */
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        loader.classList.add('hide');
+        setTimeout(() => { loader.style.display = 'none'; }, 800);
+        initHeroAnimation();
+      }, 1800);
+    });
+
+    /* ── CUSTOM CURSOR ───────────────────────────── */
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0;
+    let ringX  = 0, ringY  = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left  = mouseX + 'px';
+      dot.style.top   = mouseY + 'px';
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top  = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button, .work-card, .influence-card').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    /* ── STICKY NAV ──────────────────────────────── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    /* ── HAMBURGER ───────────────────────────────── */
+    const hamburger  = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    /* ── HERO ANIMATION ──────────────────────────── */
+    function initHeroAnimation() {
+      // Eyebrow fade
+      gsap.to('#heroEyebrow', { opacity: 1, duration: 0.8, delay: 0.2, ease: 'power2.out' });
+      gsap.to('#heroSubname', { opacity: 1, duration: 0.8, delay: 1.4, ease: 'power2.out' });
+      gsap.to('#heroTagline', { opacity: 1, duration: 0.8, delay: 1.7, ease: 'power2.out' });
+      gsap.to('#heroLocation', { opacity: 1, duration: 0.8, delay: 2.0, ease: 'power2.out' });
+      gsap.to('#scrollIndicator', { opacity: 1, duration: 1, delay: 2.4, ease: 'power2.out' });
+
+      // Staggered letter animation for hero name
+      const nameEl = document.getElementById('heroName');
+      const text   = nameEl.textContent;
+      nameEl.textContent = '';
+      nameEl.style.opacity = 1;
+
+      [...text].forEach((char) => {
+        const span = document.createElement('span');
+        span.classList.add('char');
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        nameEl.appendChild(span);
+      });
+
+      gsap.to('#heroName .char', {
+        opacity: 1,
+        y: 0,
+        duration: 0.06,
+        stagger: 0.04,
+        delay: 0.5,
+        ease: 'power3.out'
+      });
+    }
+
+    /* ── PARALLAX HERO BG ────────────────────────── */
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      if (heroBg) {
+        heroBg.style.transform = `scale(1.06) translateY(${scrolled * 0.25}px)`;
+      }
+    }, { passive: true });
+
+    /* ── SCROLL FADE-UP (IntersectionObserver) ───── */
+    const fadeEls = document.querySelectorAll('.fade-up');
+
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Animate skill bars when in view
+          const bar = entry.target.querySelector('.skill-bar-fill');
+          if (bar) bar.classList.add('animated');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    fadeEls.forEach(el => fadeObserver.observe(el));
+
+    /* Also observe skill bars directly */
+    document.querySelectorAll('.skill-item').forEach(item => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const bar = entry.target.querySelector('.skill-bar-fill');
+            if (bar) {
+              setTimeout(() => bar.classList.add('animated'), 200);
+            }
+          }
+        });
+      }, { threshold: 0.3 });
+      observer.observe(item);
+    });
+
+    /* ── CONTACT FORM ────────────────────────────── */
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('formSubmitBtn');
+      btn.textContent = 'Message Sent ✓';
+      btn.style.background = '#2a6e3a';
+      btn.style.color = '#fff';
+      btn.disabled = true;
+      document.getElementById('contactForm').reset();
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+      }, 4000);
+    }
+
+    /* ── SMOOTH SCROLL FOR NAV LINKS ─────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
